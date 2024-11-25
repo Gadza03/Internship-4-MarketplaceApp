@@ -13,7 +13,7 @@ namespace MarketPlace.Presentation.Menus
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Račun pravite da bi bili\n1. Kupac\n2. Prodavač");
+                Console.WriteLine("Račun ćete koristiti kao\n\n1. Kupac\n2. Prodavač");
                 var choice = Console.ReadLine().Trim();
                 switch (choice)
                 {
@@ -21,7 +21,7 @@ namespace MarketPlace.Presentation.Menus
                         CustomerSignIn();
                         break;
                     case "2":
-                        SellerSignIn();
+                        SellerSignIn("prodavač");
                         break;
                     default:
                         Console.WriteLine("Pogrešan unos, pokušajte ponovno.");
@@ -32,13 +32,14 @@ namespace MarketPlace.Presentation.Menus
         }
         private static void CustomerSignIn()
         {
-            SellerSignIn();
-            Console.WriteLine("Unesite početni balans: ");
+            SellerSignIn("kupac");
+            Console.Write("Unesite početni balans ($): ");
             var balance = Console.ReadLine();
         }
-        private static void SellerSignIn()
+        private static void SellerSignIn(string prompt)
         {
-            Console.Write("Unesite ime: ");
+            Console.Clear();
+            Console.Write($"Registrirate se kao {prompt}...\n\nUnesite ime: ");
             var name = Console.ReadLine();
             Console.Write("Unesite mail: ");
             var mail = Console.ReadLine();
