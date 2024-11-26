@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{939F3A22-C8A6-42AC-9240-5D5A462D3871}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>MarketPlace.Domain</RootNamespace>
-    <AssemblyName>MarketPlace.Domain</AssemblyName>
+    <ProjectGuid>{3294BA81-5BEF-4FD2-8686-2C27FA4F2143}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MarketPlace.Presentation</RootNamespace>
+    <AssemblyName>MarketPlace.Presentation</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,9 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,13 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menus\LogIn.cs" />
+    <Compile Include="Menus\MainMenu.cs" />
+    <Compile Include="Menus\SignIn.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MarketPlace.Domain\MarketPlace.Domain.csproj">
+      <Project>{939f3a22-c8a6-42ac-9240-5d5a462d3871}</Project>
+      <Name>MarketPlace.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MarktePlace.Data\MarktePlace.Data.csproj">
       <Project>{b0166bd6-6cd5-49d0-a2b1-4eb0fbe42a2c}</Project>
       <Name>MarktePlace.Data</Name>

@@ -8,9 +8,9 @@ namespace MarktePlace.Data
 {
     public static class Seed
     {
-        public static (List<User> Users, List<Product> Products, List<Transaction> Transactions) GetSeedData()
+        public static (List<User> Users, List<Product> Products, List<Transaction> Transactions, List<PromoCode> PromoCodes) GetSeedData()
         {             
-            var customer1 = new Customer("Joh Doe", "john@example.com", 100);
+            var customer1 = new Customer("John Doe", "john@example.com", 100);
             var customer2 = new Customer("Alice Green", "alice@example.com", 200);
             var seller1 = new Seller("Jane Smith", "jane@example.com");
             var seller2 = new Seller("Bob Brown", "bob@example.com");          
@@ -25,7 +25,12 @@ namespace MarktePlace.Data
             var transaction2 = new Transaction(customer2, seller2, product3, 2);
             var transactions = new List<Transaction> { transaction1, transaction2 };
 
-            return (users, products, transactions);
+            var promoCodes = new List<PromoCode>
+            {
+            new PromoCode("ELECTRO10", ProductCategory.Electronics, 10, DateTime.Now.AddDays(30)),
+            new PromoCode("BOOKS20", ProductCategory.Books, 20, DateTime.Now.AddDays(15))
+             };
+            return (users, products, transactions, promoCodes);
         }
     }
 }
