@@ -24,14 +24,10 @@ namespace MarketPlace.Presentation.Menus
                 switch (choice)
                 {
                     case "1":
-                        var customer = RegisterUser("kupac");
-                        _userRepository.AddUser(customer);
-                        Console.WriteLine("Uspješno dodan korsnik, kupac!");
+                        RegisterUser("kupac");
                         break;
                     case "2":
-                        var seller = RegisterUser("prodavač");
-                        _userRepository.AddUser(seller);
-                        Console.WriteLine("Uspješno dodan korsnik, prodavač!");
+                        RegisterUser("prodavač");                        
                         break;
                     case "3":
                         Console.WriteLine(_userRepository.GetAllUsers());
@@ -48,7 +44,7 @@ namespace MarketPlace.Presentation.Menus
             }
         }
 
-        private User RegisterUser(string prompt)
+        private void RegisterUser(string prompt)
         {
             var name = "";
             var mail = "";
@@ -101,10 +97,17 @@ namespace MarketPlace.Presentation.Menus
                     break;
                 }
             }
-            if (prompt.ToLower() == "kupac")            
-                return new Customer(name, mail, double.Parse(balance));                  
-            else            
-                return new Seller(name,mail);       
+            if (prompt.ToLower() == "kupac")
+            {
+                _userRepository.AddCustomerToList(name,mail,double.Parse(balance));
+                Console.WriteLine("Uspješno dodan korsnik, kupac!");
+            }
+            else
+            {
+                _userRepository.AddSellerToList(name, mail);
+                Console.WriteLine("Uspješno dodan korsnik, prodavač!");
+            }
+                
         }      
         private string GetErrorMessage(ResponseResultType resultType)
         {

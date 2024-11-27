@@ -69,9 +69,13 @@ namespace MarketPlace.Domain.Repositories
 
             return ResponseResultType.Success;
         }
-        public void AddUser(User user)
+        public void AddCustomerToList(string name, string email, double balance)
         {
-            _marketPlace.AllUsers.Add(user);
+            _marketPlace.AllUsers.Add(new Customer(name,email,balance));
+        }
+        public void AddSellerToList(string name, string email)
+        {
+            _marketPlace.AllUsers.Add(new Seller(name, email));
         }
         public bool PurchaseProduct(Customer customer, Product product)
         {
