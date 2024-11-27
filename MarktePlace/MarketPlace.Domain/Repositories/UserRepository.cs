@@ -23,11 +23,7 @@ namespace MarketPlace.Domain.Repositories
                 displayUsers += $"\n{user.Name} {user.Mail}";
             }
             return displayUsers;
-        }      
-        public User FindUserByName(string name)
-        {
-            return _marketPlace.AllUsers.FirstOrDefault(user => user.Name.ToLower() == name);
-        }
+        }              
         public User FindUserByNameAndMail(string mail, string name)
         {
             return _marketPlace.AllUsers.FirstOrDefault(user => user.Mail.ToLower() == mail && user.Name.ToLower() == name);
@@ -79,6 +75,20 @@ namespace MarketPlace.Domain.Repositories
         public void AddUser(User user)
         {
             _marketPlace.AllUsers.Add(user);
+        }
+        public bool PurchaseProduct(Customer customer, Product product)
+        {
+            if (customer.Balance >= product.Price)
+            {
+                customer.Balance -= product.Price;
+                _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product));
+                customer.PurchasedProducts.Add(product);
+                product.Amount -= 1;
+                return true;
+            }
+            else
+                return false;
+
         }
     }
 }

@@ -13,9 +13,14 @@ namespace MarketPlace.Presentation.Menus
        public static void DisplayMainMenu()
         {
             Marketplace marketPlace = new Marketplace();             
+
             UserRepository userRepository = new UserRepository(marketPlace);
+
             SignIn signInMenu = new SignIn(userRepository);
             LogIn logInMenu = new LogIn(userRepository);
+
+            ProductRepository productRepository = new ProductRepository(marketPlace);
+            CustomerMenu customerMenu = new CustomerMenu(productRepository, userRepository);
             while (true)
             {
                 Console.Clear();
@@ -27,8 +32,10 @@ namespace MarketPlace.Presentation.Menus
                         signInMenu.ChooseCustomerOrSeller();
                         break;
                     case "2":
-                        logInMenu.LogInUser();
-
+                        var user = logInMenu.LogInUser();
+                        if (user is Customer customer)
+                            customerMenu.CustomerMenuDisplay(customer);
+                        //else if (user is Seller)
                         break;
                     case "3":
                         Console.WriteLine(userRepository.GetAllUsers()); 
@@ -44,5 +51,6 @@ namespace MarketPlace.Presentation.Menus
 
             }
         }
+        
     }
 }

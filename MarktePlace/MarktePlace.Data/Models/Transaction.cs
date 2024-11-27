@@ -15,13 +15,12 @@ namespace MarktePlace.Data.Models
         public int Amount { get; set; }
         DateTime DateTimeOfTransaction  { get; }
 
-        public Transaction(Customer customer, Seller seller, Product productId, int amount)
+        public Transaction(Customer customer, Seller seller, Product productId)
         {
             this.Id = Guid.NewGuid();
             this.Customer = customer;
             this.Seller = seller;
             this.ProductId = productId;
-            this.Amount = amount;
             this.DateTimeOfTransaction = DateTime.Now;
         }
         

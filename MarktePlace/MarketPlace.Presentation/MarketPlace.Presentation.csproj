@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menus\CustomerMenu.cs" />
     <Compile Include="Menus\LogIn.cs" />
     <Compile Include="Menus\MainMenu.cs" />
     <Compile Include="Menus\SignIn.cs" />

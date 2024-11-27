@@ -8,8 +8,8 @@ namespace MarktePlace.Data.Models
 {
     public class Seller : User
     {
-        public List<Product> ProductsForSale { get; set; }
-        
+        public List<Product> ProductsForSale { get; set; } = new List<Product>();
+
         public Seller(string name, string email) : base(name,  email)
         {
 
