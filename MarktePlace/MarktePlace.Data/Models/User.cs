@@ -8,13 +8,14 @@ namespace MarktePlace.Data.Models
 {
     public class User
     {
-        public int Id { get; } = 1;
+        private static int _idCounter = 0;
+        public int Id { get; private set; }
         public string Name { get; set; }
         public string Mail { get; set; }
 
         public User(string name, string email)
         {            
-            this.Id = this.Id++;
+            this.Id = ++_idCounter;
             this.Name = name;      
             this.Mail = email;
         }

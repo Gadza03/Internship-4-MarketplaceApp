@@ -11,7 +11,8 @@ namespace MarketPlace.Presentation
     {
         static void Main(string[] args)
         {
-            MainMenu.DisplayMainMenu();
+            var mainMenu = new MainMenu();
+            mainMenu.DisplayMainMenu();
         }
     }
 }

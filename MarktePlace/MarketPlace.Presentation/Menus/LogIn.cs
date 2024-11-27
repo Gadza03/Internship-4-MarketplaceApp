@@ -11,11 +11,8 @@ namespace MarketPlace.Presentation.Menus
 {
     public class LogIn
     {
-        private readonly UserRepository _userRepository;
-        public LogIn(UserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
+        private readonly UserRepository _userRepository = new UserRepository();
+        private readonly ProductRepository _productRepository = new ProductRepository();
 
         public User LogInUser()
         {

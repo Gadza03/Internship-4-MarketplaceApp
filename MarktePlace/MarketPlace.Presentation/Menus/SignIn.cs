@@ -11,11 +11,9 @@ namespace MarketPlace.Presentation.Menus
 {
     public class SignIn
     {
-        private readonly UserRepository _userRepository;
-        public SignIn(UserRepository userRepository)
-        {
-            _userRepository = userRepository;
-        }
+        private readonly UserRepository _userRepository = new UserRepository();
+        private readonly ProductRepository _productRepository = new ProductRepository();
+
         public void ChooseCustomerOrSeller()
         {
             while (true)
@@ -34,6 +32,9 @@ namespace MarketPlace.Presentation.Menus
                         var seller = RegisterUser("prodavač");
                         _userRepository.AddUser(seller);
                         Console.WriteLine("Uspješno dodan korsnik, prodavač!");
+                        break;
+                    case "3":
+                        Console.WriteLine(_userRepository.GetAllUsers());
                         break;
                     case "0":
                         Console.WriteLine("Povratak nazad.");

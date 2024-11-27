@@ -9,13 +9,8 @@ namespace MarketPlace.Presentation.Menus
 {
     public class CustomerMenu
     {
-        private readonly ProductRepository _productRepository;
-        private readonly UserRepository _userRepository;
-        public CustomerMenu(ProductRepository productRepository, UserRepository userRepository)
-        {
-            _productRepository = productRepository;
-            _userRepository = userRepository;
-        }
+        private readonly UserRepository _userRepository = new UserRepository();
+        private readonly ProductRepository _productRepository = new ProductRepository();
 
         public void CustomerMenuDisplay(Customer customer)
         {
@@ -25,7 +20,7 @@ namespace MarketPlace.Presentation.Menus
                 Console.Clear();
                 Console.WriteLine("Dobrodošli na Marketplace\n\n1. Pregled proizvoda\n2. Kupi proizvode\n3. Povijest kupovine" +
                     "\n4. Omiljeni proizvodi\n5. Varti proizvod\n0. Izlaz");
-                Console.Write("Choose an option: ");
+                Console.Write("Izaberi opciju: ");
                 var choice = Console.ReadLine();
 
 

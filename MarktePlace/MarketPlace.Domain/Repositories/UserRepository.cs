@@ -10,17 +10,14 @@ namespace MarketPlace.Domain.Repositories
 {
     public class UserRepository
     {
-        private Marketplace _marketPlace;        
-        public UserRepository(Marketplace marketplace)
-        {
-            _marketPlace = marketplace;
-        }
+        private readonly Marketplace _marketPlace = new Marketplace();        
+      
         public string GetAllUsers()
         {
             var displayUsers = "";
             foreach (var user in _marketPlace.AllUsers)
             {
-                displayUsers += $"\n{user.Name} {user.Mail}";
+                displayUsers += $"\n{user.Id} {user.Name} {user.Mail}";
             }
             return displayUsers;
         }              
@@ -83,7 +80,11 @@ namespace MarketPlace.Domain.Repositories
                 customer.Balance -= product.Price;
                 _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product));
                 customer.PurchasedProducts.Add(product);
+
                 product.Amount -= 1;
+                if (product.Amount == 0)
+                    product.Status = ProductStatus.Sold;
+
                 return true;
             }
             else

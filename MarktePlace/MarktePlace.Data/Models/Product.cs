@@ -16,16 +16,7 @@ namespace MarktePlace.Data.Models
         public Seller Seller { get; set; }
         public ProductCategory Category { get; set; }
         public List<int> Rating { get; set; }
-        private int _amount;
-        public int Amount
-        {
-            get => _amount;
-            set
-            {
-                _amount = value;              
-                Status = _amount == 0 ? ProductStatus.Sold : ProductStatus.ForSale;
-            }
-        }
+        public int Amount { get; set; }
         public Product(string name, string description,double price, ProductStatus status, Seller seller, ProductCategory category, int amount)
         {
             this.Id = Guid.NewGuid();

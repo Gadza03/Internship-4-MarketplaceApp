@@ -8,11 +8,7 @@ namespace MarketPlace.Domain.Repositories
 {
     public class ProductRepository
     {
-        private Marketplace _marketPlace;
-        public ProductRepository(Marketplace marketplace)
-        {
-            _marketPlace = marketplace;
-        }
+        private readonly Marketplace _marketPlace = new Marketplace();       
 
         public string ViewProductsForSale()
         {
