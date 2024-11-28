@@ -18,34 +18,44 @@ namespace MarketPlace.Presentation.Menus
             {
 
                 Console.Clear();
-                Console.WriteLine("Dobrodošli na Marketplace\n\n1. Pregled proizvoda\n2. Kupi proizvode\n3. Povijest kupovine" +
-                    "\n4. Omiljeni proizvodi\n5. Varti proizvod\n0. Izlaz");
+                Console.WriteLine($"Dobrodošli na Marketplace {customer.Name}\n\n1. Pregled proizvoda\n2. Kupi proizvode\n3. Povijest kupovine" +
+                    "\n4. Dodaj omiljeni proizvodi u favourites\n5. Omiljeni proizvodi\n6. Varti proizvod\n0. Izlaz");
                 Console.Write("Izaberi opciju: ");
                 var choice = Console.ReadLine();
 
 
-
+                Console.Clear();
                 switch (choice)
-                {
-                    case "1":
-                        Console.Clear();
-                        Console.WriteLine("Pregled svih proizvoda koji su na prodaju: \n\n" + _productRepository.ViewProductsForSale());
+                {                    
+                    case "1":                        
+                        Console.WriteLine(_productRepository.ViewProductsForSale());
                         break;
-                    case "2":
-                        Console.Clear();                        
-                        var product = ChooseProductToPurchase(customer);
-                        var haveEnoughMoney = _userRepository.PurchaseProduct(customer, product);
-                        PrintIsTransactionApproved(haveEnoughMoney);
-                            
+                    case "2":                                              
+                        var productToPurchase = ChooseProductToPurchase(customer);
+                        if (productToPurchase == null)
+                            break;                        
+                        var haveEnoughMoney = _userRepository.PurchaseProduct(customer, productToPurchase);
+                        PrintIsTransactionApproved(haveEnoughMoney);                            
                         break;
-                    case "3":
-
+                    case "3":                        
+                        Console.WriteLine(_userRepository.PrintPurchasedProducts(customer));
                         break;
                     case "4":
-
+                        var productToFavourites = ChooseProductToFavourites(customer);
+                        if (productToFavourites == null)
+                            break;
+                        _userRepository.AddProductToFavourites(customer, productToFavourites);
+                        Console.WriteLine("Uspješno dodan proizvod u favourites!");
                         break;
                     case "5":
-
+                        Console.WriteLine(_userRepository.PrintFavouriteProducts(customer));
+                        break;
+                    case "6":
+                        var productToReturn = ChooseProductToReturn(customer);
+                        if (productToReturn == null)
+                            break;
+                        _userRepository.ReturnPorduct(customer, productToReturn);
+                        Console.WriteLine("Uspješno ste vratili proizvod!");
                         break;
                     case "0":
                         Console.WriteLine("Izlaz...");
@@ -71,20 +81,78 @@ namespace MarketPlace.Presentation.Menus
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine($"Vaš trenutni balance je: {customer.Balance}\n");
+                Console.WriteLine($"Vaš trenutni balance je: {customer.Balance}$\n");
                 Console.WriteLine("Nabavka: \n"+ _productRepository.ViewProductsForSale());
-                Console.Write("\nUnesite ime proizvoda kojeg želite kupiti: ");
-                var productName = Console.ReadLine().ToLower().Trim();
-                product = _productRepository.FindProductByName(productName);
+                Console.Write("\nUnesite ID proizvoda kojeg želite kupiti (Copy-Paste) (Enter - korak nazad): ");
+                var productId = Console.ReadLine().ToLower().Trim();
+                if (productId == "")                
+                    return null;
+                
+                product = _productRepository.FindProductById(productId);
+                if (product is null)
+                {
+                    Console.WriteLine("Uneseni proizvod ne postoji, pokušajte ponovno!");
+                    Console.ReadKey();
+                    continue;
+                }              
+                break;
+            }
+            return product;
+
+        }
+        private Product ChooseProductToReturn(Customer customer)
+        {
+            Product product;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine(_userRepository.PrintPurchasedProducts(customer));               
+                Console.Write("\nUnesite ID proizvoda kojeg želite vratiti (Copy-Paste) (Enter - korak nazad): ");                
+                var productId = Console.ReadLine().Trim();
+                if (productId == "")
+                    return null;
+                product = _productRepository.FindProductById(productId);
                 if (product is null)
                 {
                     Console.WriteLine("Uneseni proizvod ne postoji, pokušajte ponovno!");
                     Console.ReadKey();
                     continue;
                 }
+                
                 break;
             }
             return product;
+            
+
+        }
+        private Product ChooseProductToFavourites(Customer customer)
+        {
+            Product product;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine(_productRepository.ViewProductsForSale());
+                Console.Write("\nUnesite ID proizvoda kojeg želite dodati u favourites (Copy-Paste) (Enter - korak nazad): ");
+                var productId = Console.ReadLine().Trim();
+                if (productId == "")
+                    return null;
+                product = _productRepository.FindProductById(productId);
+                if (product is null)
+                {
+                    Console.WriteLine("Uneseni proizvod ne postoji, pokušajte ponovno!");
+                    Console.ReadKey();
+                    continue;
+                }
+                if (_userRepository.IsProductInFavourites(customer,productId))
+                {
+                    Console.WriteLine("Uneseni proizvod je vec na listi omiljenih.");
+                    Console.ReadKey();
+                    continue;
+                }
+                break;
+            }
+            return product;
+
 
         }
     }

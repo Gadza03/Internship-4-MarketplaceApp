@@ -16,9 +16,13 @@ namespace MarktePlace.Data
             var seller2 = new Seller("Bob Brown", "bob@example.com");          
             var users = new List<User> { customer1, customer2, seller1, seller2 }; 
             
-            var product1 = new Product("Laptop", "Gaming laptop", 500, ProductStatus.ForSale, seller1, ProductCategory.Electronics,2);
-            var product2 = new Product("Book", "C# Programming Guide", 50, ProductStatus.ForSale, seller1, ProductCategory.Books,1);
-            var product3 = new Product("Headphones", "Wireless headphones", 25, ProductStatus.ForSale, seller2, ProductCategory.Electronics,3);
+            var product1 = new Product("Laptop", "Gaming laptop", 500, ProductStatus.ForSale, seller1, ProductCategory.Electronics);            
+            var product2 = new Product("Book", "C# Programming Guide", 50, ProductStatus.ForSale, seller1, ProductCategory.Books);
+            seller1.ProductsForSale.Add(product1);
+            seller1.ProductsForSale.Add(product2);
+            var product3 = new Product("Headphones", "Wireless headphones", 25, ProductStatus.ForSale, seller2, ProductCategory.Electronics);
+            seller2.ProductsForSale.Add(product3);
+
             var products = new List<Product> { product1, product2, product3 };
 
             var transaction1 = new Transaction(customer1, seller1, product2);

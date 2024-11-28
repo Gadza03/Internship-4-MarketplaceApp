@@ -77,23 +77,71 @@ namespace MarketPlace.Domain.Repositories
         {
             _marketPlace.AllUsers.Add(new Seller(name, email));
         }
+        private void AddCommissionToMarketplace(double price)
+        {
+            double commission = price * 0.05;
+            _marketPlace.TotalTransactionFee += commission;           
+        }
         public bool PurchaseProduct(Customer customer, Product product)
         {
             if (customer.Balance >= product.Price)
             {
                 customer.Balance -= product.Price;
-                _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product));
-                customer.PurchasedProducts.Add(product);
-
-                product.Amount -= 1;
-                if (product.Amount == 0)
-                    product.Status = ProductStatus.Sold;
-
+                _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product));                
+                customer.PurchasedProducts.Add(product);                    
+                product.Status = ProductStatus.Sold;
+                product.Seller.SoldProducts.Add(product);
+                product.Seller.ProductsForSale.Remove(product);
+                AddCommissionToMarketplace(product.Price);
                 return true;
             }
             else
                 return false;
 
+        }
+        public void ReturnPorduct(Customer customer, Product product)
+        {
+            customer.Balance += product.Price * 0.80;
+            product.Seller.SoldProducts.Remove(product);
+            product.Seller.ReturnedProducts.Add(product);
+            product.Seller.ProductsForSale.Add(product);
+            product.Status = ProductStatus.ForSale;           
+        }
+
+        public void AddProductToFavourites(Customer customer, Product product)
+        {
+            customer.FavouriteProducts.Add(product);
+        }
+        public string PrintFavouriteProducts(Customer customer )
+        {
+            if (customer.FavouriteProducts.Count == 0)
+                return "Korisnik nema favourite proizvoda.";
+            var favouriteProducts = "Popis omiljenih proizvoda: \n";
+            foreach (var product in customer.FavouriteProducts)
+            {
+                favouriteProducts += $"\nNaziv: {product.Name} Cijena: {product.Price}$ Kategorija: {product.Category} Status: {product.Status}";
+            }
+
+            return favouriteProducts;
+        }
+        
+        public string PrintPurchasedProducts(Customer customer)
+        {
+            if (customer.PurchasedProducts.Count == 0)            
+                return "Korisnik nema kupljenih proizvoda.";
+            
+            var purchasedProductsDisplay = "Popis svih kupljenih proizvoda\n";
+            foreach (var product in customer.PurchasedProducts)
+            {
+                purchasedProductsDisplay += $"\nID: {product.Id}\nNaziv: {product.Name}\t Cijena: {product.Price}$\t Kategorija: {product.Category}\n";
+            }
+            return purchasedProductsDisplay;
+        }
+        public bool IsProductInFavourites(Customer customer, string id)
+        {
+            if (customer.FavouriteProducts.Any(p => p.Id.ToString() == id))
+                return true;
+            return false;            
         }
     }
 }

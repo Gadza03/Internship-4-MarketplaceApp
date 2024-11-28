@@ -11,6 +11,7 @@ namespace MarktePlace.Data.Models
         public List<Product> AllProducts { get; private set; }
         public List<Transaction> AllTransactions { get; private set; }
         public List<PromoCode> AllPromoCodes { get; private set; }
+        public double TotalTransactionFee { get;  set; }
         public Marketplace()
         {
             var (users, products, transactions, promoCodes) = Seed.GetSeedData();

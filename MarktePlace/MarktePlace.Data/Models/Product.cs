@@ -16,8 +16,7 @@ namespace MarktePlace.Data.Models
         public Seller Seller { get; set; }
         public ProductCategory Category { get; set; }
         public List<int> Rating { get; set; }
-        public int Amount { get; set; }
-        public Product(string name, string description,double price, ProductStatus status, Seller seller, ProductCategory category, int amount)
+        public Product(string name, string description,double price, ProductStatus status, Seller seller, ProductCategory category)
         {
             this.Id = Guid.NewGuid();
             this.Name = name;
@@ -26,7 +25,7 @@ namespace MarktePlace.Data.Models
             this.Status = status;
             this.Seller = seller;
             this.Category = category;
-            this.Amount = amount;
+           
         }
     }
 }
