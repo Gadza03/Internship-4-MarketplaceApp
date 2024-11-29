@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MarketPlace.Domain.Repositories;
-using MarketPlace.Domain.Repositories.Enum;
+using MarketPlace.Domain.Repositories.Enums;
 using MarktePlace.Data.Models;
 
 namespace MarketPlace.Presentation.Menus
 {
     public class SignIn
     {
-        private readonly UserRepository _userRepository = new UserRepository();
-        private readonly ProductRepository _productRepository = new ProductRepository();
+        private readonly UserRepository _userRepository;
+        private readonly ProductRepository _productRepository;
+        public SignIn(UserRepository userRepository, ProductRepository productRepository)
+        {
+            _userRepository = userRepository;
+            _productRepository = productRepository;
+        }
 
         public void ChooseCustomerOrSeller()
         {
@@ -46,7 +51,20 @@ namespace MarketPlace.Presentation.Menus
             var name = "";
             var mail = "";
             var balance = "";
-             
+            while (true)
+            {
+                Console.Clear();
+                Console.Write($"Registrirate se kao {prompt}...\n\nUnesite ime: ");
+                name = Console.ReadLine().ToLower().Trim();
+                var nameValidation = _userRepository.GetValidUserName(name);
+                if (nameValidation != ResponseResultType.Success)
+                {
+                    Console.WriteLine($"Greška: {GetErrorMessage(nameValidation)}");
+                    Console.ReadKey();
+                    continue;
+                }
+                break;
+            }
             while (true)
             {
                 Console.Clear();

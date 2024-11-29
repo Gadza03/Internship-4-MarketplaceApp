@@ -22,12 +22,17 @@ namespace MarktePlace.Data
             seller1.ProductsForSale.Add(product1);
             seller1.ProductsForSale.Add(product2);
             var product3 = new Product("Headphones", "Wireless headphones", 25, ProductStatus.ForSale, seller2, ProductCategory.Electronics);
+            var product4 = new Product("Mobile", "Mobile phone", 150, ProductStatus.Sold, seller2, ProductCategory.Electronics);
+
             seller2.ProductsForSale.Add(product3);
 
             var products = new List<Product> { product1, product2, product3 };
 
             var transaction1 = new Transaction(customer1, seller1, product2);
+            seller1.SoldProducts.Add(product2);
             var transaction2 = new Transaction(customer2, seller2, product3);
+            seller2.SoldProducts.Add(product4);
+
             var transactions = new List<Transaction> { transaction1, transaction2 };
 
             var promoCodes = new List<PromoCode>

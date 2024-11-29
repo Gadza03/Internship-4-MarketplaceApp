@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace MarktePlace.Data.Models
 {
     public class Marketplace
-    {        
+    {
         public List<User> AllUsers { get; private set; }
         public List<Product> AllProducts { get; private set; }
         public List<Transaction> AllTransactions { get; private set; }

@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MarktePlace.Data.Models;
-using MarketPlace.Domain.Repositories.Enum;
-
+using MarketPlace.Domain.Repositories.Enums;
 namespace MarketPlace.Domain.Repositories
 {
     public class UserRepository
     {
-        private readonly Marketplace _marketPlace = new Marketplace();      
+        private readonly Marketplace _marketPlace;
+        public UserRepository(Marketplace marketplace)
+        {
+            _marketPlace = marketplace;
+        }
       
                
         public User FindUserByNameAndMail(string mail, string name)
@@ -138,7 +141,58 @@ namespace MarketPlace.Domain.Repositories
 
         public void AddProductForSale(Seller seller, string name, string description, double price, string category)
         {
-                var newProduct = new Product(name,description,price,seller,category)
+            ProductCategory parsedCategory = (ProductCategory)Enum.Parse(typeof(ProductCategory), category, true);
+            var newProduct = new Product(name, description, price, seller, parsedCategory);
+            _marketPlace.AllProducts.Add(newProduct);
+            seller.ProductsForSale.Add(newProduct);
+
+        }
+        public string GetAllSellersProducts(Seller seller)
+        {
+            var output = "Pregeled svih proizvoda: ";
+            var productList = new List<Product>();
+            productList.AddRange(seller.ProductsForSale);
+            productList.AddRange(seller.SoldProducts);
+            if (productList.Count == 0)
+                return "Trenutno nema proizvoda koji se prodaju.";            
+            foreach (var product in productList)
+            {
+                output += $"\nID: {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description}\n";
+            }
+
+            return output;
+        }
+        public double GetSellersIncome(Seller seller)
+        {
+            double income = 0;
+          
+            foreach (var product in seller.SoldProducts)
+            {
+                double commission = product.Price * 0.05;
+                income += product.Price - commission;
+            }
+            return income;
+        }
+
+        public double GetEarningsForPeriod(Seller seller, DateTime startDate, DateTime endDate)
+        {
+           
+            var filteredTransactions = _marketPlace.AllTransactions
+                .Where(t => t.Seller == seller && t.DateTimeOfTransaction>= startDate && t.DateTimeOfTransaction <= endDate)
+                .ToList();
+          
+            double totalEarnings = filteredTransactions.Sum(t => t.Product.Price);
+
+            return totalEarnings;
+        }
+
+        public bool IsValidDateStart(DateTime date)
+        {
+            return date <= DateTime.Now;
+        }
+        public bool IsValidDateEnd(DateTime dateStart, DateTime dateEnd)
+        {
+            return dateEnd > dateStart;
         }
     }
 }

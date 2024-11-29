@@ -15,7 +15,6 @@ namespace MarktePlace.Data.Models
         public ProductStatus Status { get; set; }
         public Seller Seller { get; set; }
         public ProductCategory Category { get; set; }
-        public List<int> Rating { get; set; }
         public Product(string name, string description,double price, ProductStatus status, Seller seller, ProductCategory category)
         {
             this.Id = Guid.NewGuid();

@@ -9,8 +9,13 @@ namespace MarketPlace.Presentation.Menus
 {
     public class CustomerMenu
     {
-        private readonly UserRepository _userRepository = new UserRepository();
-        private readonly ProductRepository _productRepository = new ProductRepository();
+        private readonly UserRepository _userRepository;
+        private readonly ProductRepository _productRepository;
+        public CustomerMenu(UserRepository userRepository, ProductRepository productRepository)
+        {
+            _userRepository = userRepository;
+            _productRepository = productRepository;
+        }
 
         public void CustomerMenuDisplay(Customer customer)
         {

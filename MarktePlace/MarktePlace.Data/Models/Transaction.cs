@@ -11,16 +11,15 @@ namespace MarktePlace.Data.Models
         public Guid Id { get; }
         public Customer Customer { get; set; }
         public Seller Seller { get; set; }
-        public Product ProductId { get; set; }
-        public int Amount { get; set; }
-        DateTime DateTimeOfTransaction  { get; }
+        public Product Product { get; set; }       
+        public DateTime DateTimeOfTransaction  { get; }
 
         public Transaction(Customer customer, Seller seller, Product productId)
         {
             this.Id = Guid.NewGuid();
             this.Customer = customer;
             this.Seller = seller;
-            this.ProductId = productId;
+            this.Product = productId;
             this.DateTimeOfTransaction = DateTime.Now;
         }
         

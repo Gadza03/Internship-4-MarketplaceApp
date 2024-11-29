@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarketPlace.Domain.Repositories.Enum
+namespace MarketPlace.Domain.Repositories.Enums
 {
     public enum ResponseResultType
     {     

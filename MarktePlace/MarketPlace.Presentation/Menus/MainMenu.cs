@@ -13,11 +13,13 @@ namespace MarketPlace.Presentation.Menus
        
        public void DisplayMainMenu()
         {
-            
-            var signInMenu = new SignIn();
-            var logInMenu = new LogIn();            
-            var customerMenu = new CustomerMenu();
-
+            var marketplace = new Marketplace();
+            var userRepository = new UserRepository(marketplace);
+            var productRepository = new ProductRepository(marketplace);
+            var signInMenu = new SignIn(userRepository, productRepository);
+            var logInMenu = new LogIn(userRepository, productRepository);            
+            var customerMenu = new CustomerMenu(userRepository, productRepository);
+            var sellerMenu = new SellerMenu(userRepository, productRepository);
             while (true)
             {
                 Console.Clear();
@@ -32,9 +34,11 @@ namespace MarketPlace.Presentation.Menus
                         var user = logInMenu.LogInUser();
                         if (user is Customer customer)
                             customerMenu.CustomerMenuDisplay(customer);
-                        //else if (user is Seller)
+                        else if (user is Seller seller)
+                            sellerMenu.SellerMenuDisplay(seller);
                         break;
-                    case "3":                        
+                    case "3":               
+                        
                         break;
                     case "0":
                         return;
