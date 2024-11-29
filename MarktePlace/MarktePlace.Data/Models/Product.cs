@@ -24,8 +24,17 @@ namespace MarktePlace.Data.Models
             this.Price = price;
             this.Status = status;
             this.Seller = seller;
+            this.Category = category;           
+        }
+        public Product(string name, string description, double price, Seller seller, ProductCategory category)
+        {
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.Description = description;
+            this.Price = price;
+            this.Status = ProductStatus.ForSale;
+            this.Seller = seller;
             this.Category = category;
-           
         }
     }
 }

@@ -28,10 +28,7 @@ namespace MarketPlace.Presentation.Menus
                         break;
                     case "2":
                         RegisterUser("prodavač");                        
-                        break;
-                    case "3":
-                        Console.WriteLine(_userRepository.GetAllUsers());
-                        break;
+                        break;                    
                     case "0":
                         Console.WriteLine("Povratak nazad.");
                         return;
@@ -49,27 +46,12 @@ namespace MarketPlace.Presentation.Menus
             var name = "";
             var mail = "";
             var balance = "";
-            while (true)
-            {
-                Console.Clear();
-                Console.Write($"Registrirate se kao {prompt}...\n\nUnesite ime: ");
-                name = Console.ReadLine().ToLower().Trim();
-
-                var nameValidation = _userRepository.GetValidUserName(name);
-                if (nameValidation != ResponseResultType.Success)
-                {
-                    Console.WriteLine($"Greška: {GetErrorMessage(nameValidation)}");
-                    Console.ReadKey();
-                    continue;
-                }
-                break;
-            }
+             
             while (true)
             {
                 Console.Clear();
                 Console.Write("Unesite mail: ");
                 mail = Console.ReadLine().ToLower().Trim();
-
                 var mailValidation = _userRepository.GetValidUserMail(mail);
                 if (mailValidation != ResponseResultType.Success)
                 {
@@ -77,6 +59,7 @@ namespace MarketPlace.Presentation.Menus
                     Console.ReadKey();
                     continue;
                 }
+                
                 break;
             }
             if (prompt.ToLower() == "kupac")
@@ -87,7 +70,7 @@ namespace MarketPlace.Presentation.Menus
                     Console.Write("Unesite početni balans ($): ");
                     balance = Console.ReadLine();
 
-                    var balanceValidation = _userRepository.GetValidUserBalance(balance);
+                    var balanceValidation = _userRepository.GetValidDouble(balance);
                     if (balanceValidation != ResponseResultType.Success)
                     {
                         Console.WriteLine($"Greška: {GetErrorMessage(balanceValidation)}");

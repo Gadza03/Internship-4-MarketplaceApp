@@ -63,7 +63,7 @@ namespace MarketPlace.Presentation.Menus
                     default:
                         Console.WriteLine("Neispravan unos. Pokušajte ponovno.");
                         Console.ReadKey();
-                        continue; // Invalid input, go back to the main menu
+                        continue; 
                 }
                 Console.ReadKey();
             }

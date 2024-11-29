@@ -10,21 +10,13 @@ namespace MarketPlace.Domain.Repositories
 {
     public class UserRepository
     {
-        private readonly Marketplace _marketPlace = new Marketplace();        
+        private readonly Marketplace _marketPlace = new Marketplace();      
       
-        public string GetAllUsers()
-        {
-            var displayUsers = "";
-            foreach (var user in _marketPlace.AllUsers)
-            {
-                displayUsers += $"\n{user.Id} {user.Name} {user.Mail}";
-            }
-            return displayUsers;
-        }              
+               
         public User FindUserByNameAndMail(string mail, string name)
         {
             return _marketPlace.AllUsers.FirstOrDefault(user => user.Mail.ToLower() == mail && user.Name.ToLower() == name);
-        }
+        }        
         public ResponseResultType GetValidUserName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -55,7 +47,7 @@ namespace MarketPlace.Domain.Repositories
             var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return System.Text.RegularExpressions.Regex.IsMatch(email, emailRegex);
         }
-        public ResponseResultType GetValidUserBalance(string balance)
+        public ResponseResultType GetValidDouble(string balance)
         {
 
             if (string.IsNullOrWhiteSpace(balance))
@@ -142,6 +134,11 @@ namespace MarketPlace.Domain.Repositories
             if (customer.FavouriteProducts.Any(p => p.Id.ToString() == id))
                 return true;
             return false;            
+        }
+
+        public void AddProductForSale(Seller seller, string name, string description, double price, string category)
+        {
+                var newProduct = new Product(name,description,price,seller,category)
         }
     }
 }

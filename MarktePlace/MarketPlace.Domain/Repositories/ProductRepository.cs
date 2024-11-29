@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MarktePlace.Data.Models;
+using MarketPlace.Domain.Repositories;
+using MarketPlace.Domain.Repositories.Enum;
 namespace MarketPlace.Domain.Repositories
 {
     public class ProductRepository
@@ -29,13 +31,24 @@ namespace MarketPlace.Domain.Repositories
         {
             return _marketPlace.AllProducts.FirstOrDefault(prod => prod.Name.ToLower() == name);
         }   
-
         public Product FindProductById(string id)
         {
             return _marketPlace.AllProducts.FirstOrDefault(prod => prod.Id.ToString() == id);
         }
-
-
+        public ResponseResultType GetValidProductInfo(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return ResponseResultType.BlankInput;
+            return ResponseResultType.Success;
+        }
+        public ResponseResultType GetValidProductCatgory(string category)
+        {
+            if (string.IsNullOrEmpty(category))
+                return ResponseResultType.BlankInput;
+            //if (!Enum.TryParse(typeof(ProductCategory), category, true, out var result))
+            //    return ResponseResultType.InvalidFormat;
+            return ResponseResultType.Success;
+        }
 
     }
 } 

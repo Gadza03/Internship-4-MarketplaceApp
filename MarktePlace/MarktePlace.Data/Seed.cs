@@ -10,6 +10,7 @@ namespace MarktePlace.Data
     {
         public static (List<User> Users, List<Product> Products, List<Transaction> Transactions, List<PromoCode> PromoCodes) GetSeedData()
         {             
+            
             var customer1 = new Customer("John Doe", "john@example.com", 100);
             var customer2 = new Customer("Alice Green", "alice@example.com", 200);
             var seller1 = new Seller("Jane Smith", "jane@example.com");
