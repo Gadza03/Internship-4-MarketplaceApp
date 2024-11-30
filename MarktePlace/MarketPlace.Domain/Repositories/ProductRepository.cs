@@ -15,7 +15,6 @@ namespace MarketPlace.Domain.Repositories
         {
             _marketPlace = marketplace;
         }
-
         public string ViewProductsForSale()
         {
             var productsForSale = _marketPlace.AllProducts.Where(product=>product.Status == ProductStatus.ForSale).ToList();
@@ -23,11 +22,11 @@ namespace MarketPlace.Domain.Repositories
             if (productsForSale.Count == 0)
                 return "Trenutno nema proizvoda koji se prodaju.";
 
-            var displayProducts = "Pregled svih proizvoda koji su na prodaju: \n";
+            var displayProducts = "";
             foreach (var product in productsForSale)
             {
-                displayProducts += $"\nID: {product.Id}\nIme: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description}" +
-                                   $" Prodavac: {product.Seller.Name} Status: {product.Status}\n";
+                displayProducts += $"\nID: {product.Id}\n\t- Ime: {product.Name} Cijena: {product.Price}$  Prodavač: {product.Seller.Name} \n\t" +
+                    $"- Kategorija: {product.Category} Opis: {product.Description} Status: {product.Status}\n";
             }
             return displayProducts;
         }
@@ -62,13 +61,11 @@ namespace MarketPlace.Domain.Repositories
         {
             ProductCategory parsedCategory = (ProductCategory)Enum.Parse(typeof(ProductCategory), category, true);
             return seller.SoldProducts.Where(prod => prod.Category == parsedCategory).ToList();
-
         }
         public List<Product> GetProductsByCategory(string category)
         {
             ProductCategory parsedCategory = (ProductCategory)Enum.Parse(typeof(ProductCategory), category, true);
             return _marketPlace.AllProducts.Where(prod => prod.Category == parsedCategory).ToList();
-
         }
       
         public string PrintSellersAllForSaleProducts(Seller seller)

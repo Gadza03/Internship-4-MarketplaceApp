@@ -13,7 +13,6 @@ namespace MarketPlace.Domain.Repositories.Enums
         AlreadyExists,
         BlankInput,
         InvalidFormat,
-        InvalidValue
-        
+        InvalidValue        
     }
 }

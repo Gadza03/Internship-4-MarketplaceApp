@@ -37,7 +37,8 @@ namespace MarketPlace.Presentation.Menus
                     case "1":                        
                         PrintAllProductByCategory();
                         break;
-                    case "2":                                              
+                    case "2":
+                        
                         var productToPurchase = ChooseProductToPurchase(customer);
                         if (productToPurchase == null)
                             break;                        
@@ -107,6 +108,7 @@ namespace MarketPlace.Presentation.Menus
         private Product ChooseProductToPurchase(Customer customer)
         {
             Product product;
+            
             while (true)
             {
                 Console.Clear();
@@ -121,6 +123,12 @@ namespace MarketPlace.Presentation.Menus
                 if (product is null)
                 {
                     Console.WriteLine("Uneseni proizvod ne postoji, pokušajte ponovno!");
+                    Console.ReadKey();
+                    continue;
+                }
+                if (product.Status == ProductStatus.Sold)
+                {
+                    Console.WriteLine("Uneseni proizvod je raspordan.");
                     Console.ReadKey();
                     continue;
                 }

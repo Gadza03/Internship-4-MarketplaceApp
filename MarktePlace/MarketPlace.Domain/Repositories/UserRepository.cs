@@ -94,7 +94,6 @@ namespace MarketPlace.Domain.Repositories
             }
             else
                 return false;
-
         }
         public void ReturnPorduct(Customer customer, Product product)
         {
@@ -126,7 +125,6 @@ namespace MarketPlace.Domain.Repositories
             {
                 favouriteProducts += $"\nNaziv: {product.Name} Cijena: {product.Price}$ Kategorija: {product.Category} Status: {product.Status}";
             }
-
             return favouriteProducts;
         }
         
@@ -155,7 +153,6 @@ namespace MarketPlace.Domain.Repositories
             var newProduct = new Product(name, description, price, seller, parsedCategory);
             _marketPlace.AllProducts.Add(newProduct);
             seller.ProductsForSale.Add(newProduct);
-
         }
         public string GetAllSellersProducts(Seller seller)
         {
@@ -169,13 +166,11 @@ namespace MarketPlace.Domain.Repositories
             {
                 output += $"\nID: {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description} Status: {product.Status}\n";
             }
-
             return output;
         }
         public double GetSellersIncome(Seller seller)
         {
-            double income = 0;
-          
+            double income = 0;          
             foreach (var product in seller.SoldProducts)
             {
                 double commission = product.Price * 0.05;
@@ -185,12 +180,10 @@ namespace MarketPlace.Domain.Repositories
         }
 
         public double GetEarningsForPeriod(Seller seller, DateTime startDate, DateTime endDate)
-        {
-           
+        {           
             var filteredTransactions = _marketPlace.AllTransactions
                 .Where(t => t.Seller == seller && t.DateTimeOfTransaction>= startDate && t.DateTimeOfTransaction <= endDate
-                        && t.TransacitonType == TransacitonType.Purchase)
-                .ToList();
+                        && t.TransacitonType == TransacitonType.Purchase).ToList();
           
             double totalEarnings = filteredTransactions.Sum(t => t.Product.Price - (t.Product.Price*0.05));
 
