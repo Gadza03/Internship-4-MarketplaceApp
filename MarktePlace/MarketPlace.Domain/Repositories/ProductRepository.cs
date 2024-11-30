@@ -27,7 +27,7 @@ namespace MarketPlace.Domain.Repositories
             foreach (var product in productsForSale)
             {
                 displayProducts += $"\nID: {product.Id}\nIme: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description}" +
-                                   $" Prodavac: {product.Seller.Name}\n";
+                                   $" Prodavac: {product.Seller.Name} Status: {product.Status}\n";
             }
             return displayProducts;
         }
@@ -58,23 +58,39 @@ namespace MarketPlace.Domain.Repositories
                 return ResponseResultType.InvalidFormat;
             return ResponseResultType.Success;
         }
-        public List<Product> GetProductByCategory(string category, Seller seller)
+        public List<Product> GetSellersProductByCategory(string category, Seller seller)
         {
             ProductCategory parsedCategory = (ProductCategory)Enum.Parse(typeof(ProductCategory), category, true);
             return seller.SoldProducts.Where(prod => prod.Category == parsedCategory).ToList();
 
         }
+        public List<Product> GetProductsByCategory(string category)
+        {
+            ProductCategory parsedCategory = (ProductCategory)Enum.Parse(typeof(ProductCategory), category, true);
+            return _marketPlace.AllProducts.Where(prod => prod.Category == parsedCategory).ToList();
+
+        }
+      
         public string PrintSellersAllForSaleProducts(Seller seller)
         {
             var output = "Popis svih proizvoda:\n\n";
          
             foreach (var product in seller.ProductsForSale)
             {
-                output+=$"ID - {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$\n";
+                output+=$"\nID - {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$\n";
             }
             return output;
         }
        
+        public PromoCode FindPromoCode(ProductCategory category, string promoCode)
+        {
+            return _marketPlace.AllPromoCodes.FirstOrDefault(code => code.Category == category && code.Code == promoCode.ToUpper());
+        }
+        public Product CalculateDiscount(Product product, double discount)
+        {
+            product.Price -= (product.Price * (discount / 100));
+            return product;
+        }
     }
 } 
   

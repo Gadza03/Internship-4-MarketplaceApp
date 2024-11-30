@@ -18,20 +18,23 @@ namespace MarktePlace.Data
             var users = new List<User> { customer1, customer2, seller1, seller2 }; 
             
             var product1 = new Product("Laptop", "Gaming laptop", 500, ProductStatus.ForSale, seller1, ProductCategory.Electronics);            
-            var product2 = new Product("Book", "C# Programming Guide", 50, ProductStatus.ForSale, seller1, ProductCategory.Books);
-            seller1.ProductsForSale.Add(product1);
-            seller1.ProductsForSale.Add(product2);
+            var product2 = new Product("Book", "C# Programming Guide", 50, ProductStatus.Sold, seller1, ProductCategory.Books);
+            seller1.ProductsForSale.Add(product1);            
             var product3 = new Product("Headphones", "Wireless headphones", 25, ProductStatus.ForSale, seller2, ProductCategory.Electronics);
             var product4 = new Product("Mobile", "Mobile phone", 150, ProductStatus.Sold, seller2, ProductCategory.Electronics);
-
             seller2.ProductsForSale.Add(product3);
 
             var products = new List<Product> { product1, product2, product3 };
 
-            var transaction1 = new Transaction(customer1, seller1, product2);
+            var transaction1 = new Transaction(customer1, seller1, product2, DateTime.Parse("1-20-2024"), TransacitonType.Purchase);
             seller1.SoldProducts.Add(product2);
-            var transaction2 = new Transaction(customer2, seller2, product3);
+            customer1.Balance -= product2.Price;
+            customer1.PurchasedProducts.Add(product2);
+            
+            var transaction2 = new Transaction(customer2, seller2, product4, DateTime.Parse("3-12-2024"), TransacitonType.Purchase);
             seller2.SoldProducts.Add(product4);
+            customer2.Balance -= product4.Price;
+            customer2.PurchasedProducts.Add(product4);
 
             var transactions = new List<Transaction> { transaction1, transaction2 };
 

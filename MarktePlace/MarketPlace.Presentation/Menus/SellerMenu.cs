@@ -26,7 +26,7 @@ namespace MarketPlace.Presentation.Menus
             {
 
                 Console.Clear();
-                Console.WriteLine($"Dobrodošli na Marketplace {seller.Name}\n\n1. Dodaj proizvod\n2. Pregled proizvoda\n3. Pregled ukupne zarade" +
+                Console.WriteLine($"Dobrodošli na Marketplace {seller.Name}\n\n1. Dodaj proizvod\n2. Pregled svih proizvoda\n3. Pregled ukupne zarade" +
                     "\n4. Mijenjanje cijene\n5. Pregled prodanih po kategoriji\n6. Zarade u određenom vremenskom razdoblju\n0. Izlaz");
                 Console.Write("Izaberi opciju: ");
                 var choice = Console.ReadLine();
@@ -63,8 +63,7 @@ namespace MarketPlace.Presentation.Menus
                 }
                 Console.ReadKey();
             }
-        }
-        
+        }        
         private void PrintEarningsForPeriod(Seller seller)
         {
             DateTime startDate;
@@ -89,14 +88,14 @@ namespace MarketPlace.Presentation.Menus
                 string startDateInput = Console.ReadLine();
                 if (!DateTime.TryParse(startDateInput, out endDate) || !_userRepository.IsValidDateEnd(startDate, endDate))
                 {
-                    Console.WriteLine($"Pogrešan unos datuma (pazite da ne bude veci od pocetnog {startDate.ToShortDateString()}), pokusajte ponovno!");
+                    Console.WriteLine($"Pogrešan unos datuma (pazite da ne bude manji od pocetnog {startDate.ToShortDateString()}), pokusajte ponovno!");
                     Console.ReadKey();
                     continue;
                 }
                 break;
             }
             double earnings = _userRepository.GetEarningsForPeriod(seller, startDate, endDate);
-            Console.WriteLine($"Zarada od {startDate.ToShortDateString()} do {endDate.ToShortDateString()} iznosi: {earnings}$");
+            Console.WriteLine($"Zarada od {startDate.ToShortDateString()} do {endDate.ToShortDateString()} iznosi: {earnings}$\n");
 
 
         }        
@@ -108,7 +107,7 @@ namespace MarketPlace.Presentation.Menus
             {
                 Console.Clear();
                 Console.WriteLine(_productRepository.PrintSellersAllForSaleProducts(seller));
-                Console.Write("\nUnesite ID proizvoda kojeg želite vratiti (Copy-Paste) (Enter - korak nazad): ");
+                Console.Write("\nUnesite ID proizvoda kojemu želite promijeniti cijenu (Copy-Paste) (Enter - korak nazad): ");
                 var productId = Console.ReadLine().Trim();
                 if (productId == "")
                     return;                
@@ -147,21 +146,19 @@ namespace MarketPlace.Presentation.Menus
         {
             PrintAllCategories();
             var category = EnterValidCategory();
-            var productList = _productRepository.GetProductByCategory(category, seller);
-            Console.WriteLine($"Pregled svih proizvoda sa kategorijom {category}\n\n");
+            var productList = _productRepository.GetSellersProductByCategory(category, seller);
+            Console.Clear();
+            Console.WriteLine($"\nPregled svih proizvoda sa kategorijom {category}\n");
             foreach (var product in productList)
             {
                 Console.WriteLine($"\nID: {product.Id}\nIme: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description}");
             }
-
-
-
         }
         private void PrintIncome(Seller seller)
         {
             var income = _userRepository.GetSellersIncome(seller);
            
-            Console.WriteLine($"Ukupna zarada od prodaje (uracunat je commission po transakciji):\n\n- {income}$");
+            Console.WriteLine($"Ukupna zarada od prodaje (iznos je umanjen za commission (5%) po transakciji):\n\n- {income}$");
 
         }
         private string EnterProductInfo(string prompt)
@@ -203,8 +200,7 @@ namespace MarketPlace.Presentation.Menus
                 break;
             }
             return category;
-        }
-       
+        }       
         private void PrintAllCategories()
         {
             Console.WriteLine("Sve kategorije proizvoda:\n");
@@ -239,8 +235,6 @@ namespace MarketPlace.Presentation.Menus
             Console.WriteLine("Uspješno dodan novi proizvod.");
             
         }
-
-
         private string GetErrorMessage(ResponseResultType resultType)
         {
             switch (resultType)

@@ -24,4 +24,9 @@ namespace MarktePlace.Data.Models
         Groceries,
         HealthAndWellness
     }
+    public enum TransacitonType
+    {
+        Return,
+        Purchase
+    }
 }

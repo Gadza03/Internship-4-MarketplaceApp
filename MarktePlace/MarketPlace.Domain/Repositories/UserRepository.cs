@@ -82,11 +82,13 @@ namespace MarketPlace.Domain.Repositories
             if (customer.Balance >= product.Price)
             {
                 customer.Balance -= product.Price;
-                _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product));                
+                _marketPlace.AllTransactions.Add(new Transaction(customer, product.Seller, product, DateTime.Now, TransacitonType.Purchase));   
+                
                 customer.PurchasedProducts.Add(product);                    
                 product.Status = ProductStatus.Sold;
                 product.Seller.SoldProducts.Add(product);
                 product.Seller.ProductsForSale.Remove(product);
+
                 AddCommissionToMarketplace(product.Price);
                 return true;
             }
@@ -97,9 +99,17 @@ namespace MarketPlace.Domain.Repositories
         public void ReturnPorduct(Customer customer, Product product)
         {
             customer.Balance += product.Price * 0.80;
+
+            var purchaseTransaction = _marketPlace.AllTransactions.FirstOrDefault(t => t.Product == product &&t.Customer == customer 
+                                                                        && t.Product.Seller == product.Seller);
+            _marketPlace.AllTransactions.Remove(purchaseTransaction);
+            var returnTransaction = new Transaction(customer,product.Seller,product,DateTime.Now, TransacitonType.Return);
+            _marketPlace.AllTransactions.Add(returnTransaction);
+
             product.Seller.SoldProducts.Remove(product);
             product.Seller.ReturnedProducts.Add(product);
             product.Seller.ProductsForSale.Add(product);
+
             product.Status = ProductStatus.ForSale;           
         }
 
@@ -154,10 +164,10 @@ namespace MarketPlace.Domain.Repositories
             productList.AddRange(seller.ProductsForSale);
             productList.AddRange(seller.SoldProducts);
             if (productList.Count == 0)
-                return "Trenutno nema proizvoda koji se prodaju.";            
+                return "Korisnik nema proizvoda.";            
             foreach (var product in productList)
             {
-                output += $"\nID: {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description}\n";
+                output += $"\nID: {product.Id}\nNaziv: {product.Name} Cijena: {product.Price}$  Kategorija: {product.Category} Opis: {product.Description} Status: {product.Status}\n";
             }
 
             return output;
@@ -178,10 +188,11 @@ namespace MarketPlace.Domain.Repositories
         {
            
             var filteredTransactions = _marketPlace.AllTransactions
-                .Where(t => t.Seller == seller && t.DateTimeOfTransaction>= startDate && t.DateTimeOfTransaction <= endDate)
+                .Where(t => t.Seller == seller && t.DateTimeOfTransaction>= startDate && t.DateTimeOfTransaction <= endDate
+                        && t.TransacitonType == TransacitonType.Purchase)
                 .ToList();
           
-            double totalEarnings = filteredTransactions.Sum(t => t.Product.Price);
+            double totalEarnings = filteredTransactions.Sum(t => t.Product.Price - (t.Product.Price*0.05));
 
             return totalEarnings;
         }

@@ -10,10 +10,10 @@ namespace MarktePlace.Data.Models
     {
         public string Code { get; private set; } 
         public ProductCategory Category { get; private set; } 
-        public double DiscountPercentage { get; private set; } 
+        public int DiscountPercentage { get; private set; } 
         public DateTime ExpiryDate { get; private set; } 
 
-        public PromoCode(string code, ProductCategory category, double discountPercentage, DateTime expiryDate)
+        public PromoCode(string code, ProductCategory category, int discountPercentage, DateTime expiryDate)
         {
             Code = code;
             Category = category;
